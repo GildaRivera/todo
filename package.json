@@ -4,13 +4,17 @@
   "description": "System Integrations Week 1 Starter",
   "main": "app.js",
   "scripts": {
-    "test": "jest"
+    "start": "node app.js",
+    "test": "jest",
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "JD",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "ejs": "^3.1.6",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
   }
 }
