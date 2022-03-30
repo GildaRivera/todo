@@ -1,5 +1,4 @@
-const content = require("../../content/cards.json");
-
+const task = require("../controllers/task.controller")
 module.exports = routes => {
     //const task= require("");
 
@@ -7,24 +6,15 @@ module.exports = routes => {
     // TASK
 
     // Create a new task
-    router.post("/task", ()=>{console.log("--");return {"ss":2}});
+    router.post("/task", task.createTask);
     // Retrieve all tasks
-    router.get("/task",
-    
-    (req, res) => {
-    
-            return res.status(500).send({
-              message: "Some error occurred while retrieving users",
-            });
-        }
-    
-    );
+    router.get("/task", task.getAllTasks);
     // Retrieve a single task with id
-    router.get("/task/:id",()=>{});
+    router.get("/task/:id",task.getTask);
     // Update a task with id
-    router.put("/task/:id", ()=>{});
+    router.put("/task/:id", task.updateTask);
     // Delete a task with id
-    router.delete("/task/:id", ()=>{});
+    router.delete("/task/:id", task.deleteTask);
 
 
 
