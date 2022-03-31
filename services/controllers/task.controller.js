@@ -10,7 +10,7 @@ exports.createTask = (req, res) => {
   // Create a task
   const task = new Task({
     task: req.body.task,
-    status: req.body.status,
+    status: 'pending',
   });
   // Save task in the database
   Task.create(task, (err, data) => {
@@ -18,7 +18,7 @@ exports.createTask = (req, res) => {
       return res.status(500).send({
         message: err.message || "Some error occurred while creating the task.",
       });
-    else return res.status(200).send(data);
+    else return res.redirect("home")
   });
 };
 // Retrieve all tasks
@@ -29,7 +29,7 @@ exports.getAllTasks = (req, res) => {
         message:
           err.message || "Some error occurred while retrieving tasks",
       });
-    else return res.send(data);
+    else {   return   res.render("index", {"data":data});}
   });
 };
 

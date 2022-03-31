@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const tasks = require("./services/controllers/task.controller")
 const app = express();
 var corsOptions = {
   origin: "http://localhost:3030"
@@ -10,14 +11,13 @@ app.use(cors(corsOptions));
 app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
-app.get("/", (req, res) => {
-  res.render("index", { content });
-});
+// app.get("/home", (req, res) => {
+//   res.render("index", {content});
+// });
+
+// const content = require("./content/cards.json");
 require("./services/routes/routes.js")(app)
 
-const server = require("http").createServer(app);
-
-const content = require("./content/cards.json");
 
 // Middlewares
 

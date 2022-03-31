@@ -8,7 +8,7 @@ module.exports = routes => {
     // Create a new task
     router.post("/task", task.createTask);
     // Retrieve all tasks
-    router.get("/task", task.getAllTasks);
+    router.get("/home", task.getAllTasks);
     // Retrieve a single task with id
     router.get("/task/:id",task.getTask);
     // Update a task with id
@@ -18,5 +18,5 @@ module.exports = routes => {
 
 
 
-    routes.use('/api', router);
+    routes.use('', router);
   };
