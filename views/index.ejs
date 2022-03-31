@@ -30,85 +30,102 @@
   <div class="container is-max-desktop">
     <div class="notification is-primary">
       <%- include('./form'); %>
- 
-  <div class="table-container">
-    <table class="table is-hoverable is-fullwidth">
-      <thead>
-      
-        <tr>
-        
-          <th>Task</th>
 
-          <th>Actions</th>
+        <div class="table-container">
+          <table class="table is-hoverable is-fullwidth">
+            <thead>
 
-        </tr>
-      </thead>
+              <tr>
 
-      <tbody>
-       
-             
-        <% data.forEach(function(comment){ %><tr>
-          <td><label class="checkbox">
-            <input type="checkbox">
-            <%= comment.task %>
-          </label></td>
-        
-          <td>
-            
-            <button id=<%= comment.id %> onclick="onDelete(this.id)">
-            <i  class="fa-solid fa-trash"></i></button>
+                <th>Task</th>
+
+                <th>Actions</th>
+
+              </tr>
+            </thead>
+
+            <tbody>
 
 
-             <i class="fa-solid fa-pen"></i>
-            
-            </td></tr>
-          <% }) %>
+              <% data.forEach(function(element){ %>
+                <tr>
+                  <td><label class="checkbox">
+                      <input type="checkbox" checked="" onchange="checkStatus(<%= JSON.stringify(element.status) %>)"
+                        value=<%=element.id %>
+                      onclick="onUpdate(<%=JSON.stringify(element) %> )">
+                        <%= element.task %>
+                    </label>
 
-     
-      </tbody>
+                    <input class="input is-primary" placeholder="Primary input" value=<%=element.status %> >
+                  </td>
 
-    </table>
+                  <td>
+
+                    <button id=<%=element.id %> onclick="onDelete(this.id)">
+                      <i class="fa-solid fa-trash"></i></button>
 
 
-  
+                    <i class="fa-solid fa-pen"></i>
 
- 
+                  </td>
+                </tr>
+                <% }) %>
+
+
+            </tbody>
+
+          </table>
+
+
+
+
+
+        </div>
+
+    </div>
   </div>
+  <script>
+    function onDelete(e) {
+      $.ajax({
+        url: `/task/${e}`,
+        type: 'DELETE',
+        contentType: 'aplication/json',
 
-</div>
-</div>
-<script> 
-function onDelete(e){
-  $.ajax({
-    url: `/task/${e}`,
-    type: 'DELETE',
-    contentType: 'aplication/json',
-    
-  }).then((v)=>{
-  window.location.href='/home'
-  })
-}
-function onUpdate(e){
-  $.ajax({
-    url: `/task/${e}`,
-    type: 'PUT',
-    contentType: 'aplication/json',
-    
-  }).then((v)=>{
-  window.location.href='/home'
-  })
-}
-</script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+      }).then((v) => {
+        window.location.href = '/home'
+      })
+    }
+    function onUpdate(e) {
+      if (e.status == 'pending') {
+        e.status = 'closed'
+      } else {
+        e.status = 'pending'
+      }
+      $.ajax({
+        url: `/task/${e.id}`,
+        type: 'PUT',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify({ task: e.task, status: e.status }),
+
+        processData: false,
+      }).then((v) => {
+        window.location.href = '/home'
+      })
+    }
+
+    function checkStatus(e) { if (e == 'closed') { console.log(22); return true }; return false }
+  </script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
-<script>
-      let data= '<% data.forEach(i => { %><li> <strong><%= i.task %></strong>  </li>     <% }); %>'
-      
-</script>
+  <script>
+    let data = '<% data.forEach(i => { %><li> <strong><%= i.task %></strong>  </li>     <% }); %>'
 
-<script src="https://kit.fontawesome.com/ea57e7377a.js" crossorigin="anonymous"></script>
+  </script>
+
+  <script src="https://kit.fontawesome.com/ea57e7377a.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
