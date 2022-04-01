@@ -3,6 +3,7 @@ const sql = require("./connection");
 const Task= function(task) {
     this.task = task.task
     this.status=task.status
+    this.flag = task.flag
 
 };
 Task.create = (newTask, result) => {
@@ -39,8 +40,8 @@ Task.getAll = (result) => {
 
 Task.updateById = (id, task, result) => {
   sql.query(
-    "UPDATE task SET task = ?, status = ? WHERE id = ?",
-    [task.task, task.status,id],
+    "UPDATE task SET task = ?, status = ?, flag = ? WHERE id = ?",
+    [task.task, task.status,task.flag,id],
     (err, res) => {
       if (err) {
         return result(null, err);

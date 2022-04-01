@@ -16,7 +16,16 @@
       height: auto;
       width: auto;
     }
+    .input1{
+    box-shadow: none!important;
+    background-color: #fff!important;
+    border-color: #dbdbdb!important;
+    border-radius: 4px!important;
+    color: #363636!important;
+  border-width: 0;
+  }
 
+}
     .carousel-control-prev,
     .carousel-control-next {
       max-height: 75%;
@@ -49,23 +58,25 @@
 
               <% data.forEach(function(element){ %>
                 <tr>
-                  <td><label class="checkbox">
-                      <input type="checkbox" checked="" onchange="checkStatus(<%= JSON.stringify(element.status) %>)"
-                        value=<%=element.id %>
-                      onclick="onUpdate(<%=JSON.stringify(element) %> )">
-                        <%= element.task %>
-                    </label>
-
-                    <input class="input is-primary" placeholder="Primary input" value=<%=element.status %> >
+                  <td>
+<div class="is-flex">
+                      <input type="checkbox" value="<%= element.status %>" onchange="checkStatus(<%= JSON.stringify(element) %>)"
+            
+                        id=<%=element.id %>
+                      onclick="onUpdate(<%=JSON.stringify(element) %> )" style="position: relative; top:2vh" >
+                      <input class="input input1"  placeholder="<%=element.task %>" value="<%=element.task %>" style="position: relative; width: 90%; left: 2vw;" disabled="false">
+                    </div>
+<!--               
+                    <input class="input is-primary" placeholder="Primary input" value=<%=element.status %> > -->
                   </td>
 
                   <td>
 
-                    <button id=<%=element.id %> onclick="onDelete(this.id)">
+                    <button  class="button  is-white" onclick="onDelete(<%= JSON.stringify(element.id) %>)">
                       <i class="fa-solid fa-trash"></i></button>
 
-
-                    <i class="fa-solid fa-pen"></i>
+                      <button  class="button is-white" onclick="onEdit(<%= JSON.stringify(element.id) %>)">
+                    <i class="fa-solid fa-pen"></i></button>
 
                   </td>
                 </tr>
@@ -84,7 +95,9 @@
 
     </div>
   </div>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
   <script>
+
     function onDelete(e) {
       $.ajax({
         url: `/task/${e}`,
@@ -95,28 +108,65 @@
         window.location.href = '/home'
       })
     }
+    function onEdit(e) {
+    document.getElementById(e.id).setDisabled=true
+    }
     function onUpdate(e) {
+      console.log(e)
       if (e.status == 'pending') {
         e.status = 'closed'
       } else {
         e.status = 'pending'
       }
-      $.ajax({
-        url: `/task/${e.id}`,
-        type: 'PUT',
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: JSON.stringify({ task: e.task, status: e.status }),
-
-        processData: false,
-      }).then((v) => {
-        window.location.href = '/home'
-      })
+      // $.ajax({
+      //   url: `/task/${e.id}`,
+      //   type: 'PUT',
+      //   contentType: "application/json; charset=utf-8",
+      //   dataType: "json",
+      //   data: JSON.stringify({ task: e.task, status: e.status }),
+      //   processData: false,
+      // }).then((v) => {
+      //   window.location.href = '/home'
+      // })
     }
 
-    function checkStatus(e) { if (e == 'closed') { console.log(22); return true }; return false }
+    function checkStatus(e) { 
+console.log("--")
+      if (e.status == 'closed') {
+        
+      document.getElementById(e.id).setChecked=true
+      
+    
+       }else{
+                document.getElementById(e.id).setChecked=false
+           
+     } }
+
   </script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+     <script>
+      $(document).ready(function() {
+       
+           
+          // // Set initial state
+          // $('#textbox1').val('no');
+        
+          // // Returns yes or no in textbox1
+          // // when checked and unchecked
+          // $('#checkbox1').click(function() {
+          //     if ($("#checkbox1").is(":checked") == true) {
+          //         $('#textbox1').val('yes');
+          //     } else {
+          //         $('#textbox1').val('no');
+          //     }
+          // });
+        
+          
+        
+          
+      });
+  </script>
+  
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>

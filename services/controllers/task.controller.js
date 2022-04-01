@@ -11,9 +11,11 @@ exports.createTask = (req, res) => {
   const task = new Task({
     task: req.body.task,
     status: 'pending',
+    flag: false
   });
   // Save task in the database
   Task.create(task, (err, data) => {
+  
     if (err)
       return res.status(500).send({
         message: err.message || "Some error occurred while creating the task.",
