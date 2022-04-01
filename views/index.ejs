@@ -16,14 +16,15 @@
       height: auto;
       width: auto;
     }
-    .input1{
-    box-shadow: none!important;
-    background-color: #fff!important;
-    border-color: #dbdbdb!important;
-    border-radius: 4px!important;
-    color: #363636!important;
-  border-width: 0;
-  }
+
+    .input1 {
+      box-shadow: none !important;
+      background-color: #fff !important;
+      border-color: #dbdbdb !important;
+      border-radius: 4px !important;
+      color: #363636 !important;
+      border-width: 0;
+    }
 
 
     .carousel-control-prev,
@@ -59,32 +60,35 @@
               <% data.forEach(function(element){ %>
                 <tr>
                   <td>
-<div class="is-flex">
-                      <input type="checkbox" value="<%= element.status %>" onchange="checkStatus(<%= JSON.stringify(element) %>)"
-            
-                        id=<%=element.id %>
+                    <div class="is-flex">
+                      <input type="checkbox" value="<%= element.status %>"
+                        onchange="checkStatus(<%= JSON.stringify(element) %>)" id=<%=element.id %>
                       onclick="onUpdate(<%=JSON.stringify(element) %> )" style="position: relative; top:2vh" >
-                      <input class="input input1"  placeholder="<%=element.task %>" value="<%=element.task %>" style="position: relative; width: 90%; left: 2vw;" disabled="false"      name=<%=element.id %>>
-                      <div>
-                      <button  class="button is-white" onclick="onTaskEdit(1,<%=JSON.stringify(element) %>)" >
-                        <i class="fa-solid fa-check"></i></button>
-                        <button  class="button is-white" >
-                          <i class="fa-solid fa-x"></i></button></div>
+                        <input class="input input1" placeholder="<%=element.task %>" value="<%=element.task %>"
+                          style="position: relative; width: 90%; left: 1vw;" disabled="false" name=<%=element.id %>>
+                        <div class="is-flex">
+                          <button class="button is-white editIcons"
+                            onclick="onTaskEdit(1,<%=JSON.stringify(element) %>)">
+                            <i class="fa-solid fa-check"></i></button>
+                          <button class="button is-white editIcons"
+                            onclick="onTaskEdit(2,<%=JSON.stringify(element) %>)">
+                            <i class="fa-solid fa-x"></i></button>
+                        </div>
                     </div>
-<!--               
+                    <!--               
                     <input class="input is-primary" placeholder="Primary input" value=<%=element.status %> > -->
                   </td>
 
                   <td>
 
-                    <button  class="button  is-white" onclick="onDelete(<%= JSON.stringify(element.id) %>)">
+                    <button class="button  is-white" onclick="onDelete(<%= JSON.stringify(element.id) %>)">
                       <i class="fa-solid fa-trash"></i></button>
 
-                      <button  class="button is-white" onclick="onEdit(<%= JSON.stringify(element.id) %>)">
-                    <i class="fa-solid fa-pen"></i></button>
-           
+                    <button class="button is-white" onclick="onEdit(<%= JSON.stringify(element.id) %>)">
+                      <i class="fa-solid fa-pen"></i></button>
 
-                  
+
+
                   </td>
                 </tr>
                 <% }) %>
@@ -116,29 +120,31 @@
       })
     }
     function onEdit(e) {
-    document.getElementsByName(e)[0].disabled=false
+      document.getElementsByName(e)[0].disabled = false
+      document.getElementsByName(e)[0].className = "input is-primary"
+
     }
-    function onTaskEdit(action, element){
-      console.log(element)
-      if(action==1){
-        var task =document.getElementsByName(element.id)[0].value
+    function onTaskEdit(action, element) {
+      if (action == 1) {
+        var task = document.getElementsByName(element.id)[0].value
         console.log(task)
-        element.task=task
-              $.ajax({
-        url: `/task/${element.id}`,
-        type: 'PUT',
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        data: JSON.stringify({ task: task, status: element.status }),
-        processData: false,
-      }).then((v) => {
-        window.location.href = '/home'
-      })
-  //      document.getElementsByName(e)[0].disabled=true
-      }else{
-//        document.getElementsByName(e)[0].disabled=true
+        element.task = task
+        $.ajax({
+          url: `/task/${element.id}`,
+          type: 'PUT',
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          data: JSON.stringify({ task: task, status: element.status }),
+          processData: false,
+        }).then((v) => {
+          window.location.href = '/home'
+        })
+      } else {
+        document.getElementsByName(element.id)[0].className = "input1 input"
+        document.getElementsByName(element.id)[0].disabled = true
+        document.getElementsByName(element.id)[0].value = element.task
       }
-   
+
     }
     function onUpdate(e) {
       console.log(e)
@@ -159,42 +165,43 @@
       // })
     }
 
-    function checkStatus(e) { 
-console.log("--")
+    function checkStatus(e) {
+      console.log("--")
       if (e.status == 'closed') {
-        
-      document.getElementById(e.id).setChecked=true
-      
-    
-       }else{
-                document.getElementById(e.id).setChecked=false
-           
-     } }
+
+        document.getElementById(e.id).setChecked = true
+
+
+      } else {
+        document.getElementById(e.id).setChecked = false
+
+      }
+    }
 
   </script>
-     <script>
-      $(document).ready(function() {
-       
-           
-          // // Set initial state
-          // $('#textbox1').val('no');
-        
-          // // Returns yes or no in textbox1
-          // // when checked and unchecked
-          // $('#checkbox1').click(function() {
-          //     if ($("#checkbox1").is(":checked") == true) {
-          //         $('#textbox1').val('yes');
-          //     } else {
-          //         $('#textbox1').val('no');
-          //     }
-          // });
-        
-          
-        
-          
-      });
+  <script>
+    $(document).ready(function () {
+
+
+      // // Set initial state
+      // $('#textbox1').val('no');
+
+      // // Returns yes or no in textbox1
+      // // when checked and unchecked
+      // $('#checkbox1').click(function() {
+      //     if ($("#checkbox1").is(":checked") == true) {
+      //         $('#textbox1').val('yes');
+      //     } else {
+      //         $('#textbox1').val('no');
+      //     }
+      // });
+
+
+
+
+    });
   </script>
-  
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
