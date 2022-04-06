@@ -4,17 +4,18 @@ module.exports = routes => {
 
     var router = require("express").Router();
     // TASK
-
     // Create a new task
-    router.post("/task", task.createTask);
+    router.get("/home", (req,res)=> res.render("index"));
+    // Create a new task
+    router.post("/home", task.createTask);
     // Retrieve all tasks
-    router.get("/home", task.getAllTasks);
+    router.get("/task", task.getAllTasks);
     // Retrieve a single task with id
-    router.get("/task/:id",task.getTask);
+    router.get("/home/:id",task.getTask);
     // Update a task with id
-    router.put("/task/:id", task.updateTask);
+    router.put("/home/:id", task.updateTask);
     // Delete a task with id
-    router.delete("/task/:id", task.deleteTask);
+    router.delete("/home/:id", task.deleteTask);
 
 
 

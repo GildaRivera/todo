@@ -20,7 +20,11 @@ exports.createTask = (req, res) => {
       return res.status(500).send({
         message: err.message || "Some error occurred while creating the task.",
       });
-    else return res.redirect("home")
+      else {
+        Task.getAll((err, data) => {
+           return   res.send( {"data":data})
+        });
+      }
   });
 };
 // Retrieve all tasks
@@ -31,7 +35,8 @@ exports.getAllTasks = (req, res) => {
         message:
           err.message || "Some error occurred while retrieving tasks",
       });
-    else {   return   res.render("index", {"data":data});}
+    
+    else {   return   res.send({"data":data});}
   });
 };
 
@@ -73,7 +78,11 @@ exports.updateTask = (req, res) => {
           error: "Error updating task with id " + req.params.id,
         });
       }
-    } else return res.send(data);
+    }   else {
+      Task.getAll((err, data) => {
+         return   res.send( {"data":data})
+      });
+    }
   });
 };
 // Delete a task with the specified id in the request
@@ -89,6 +98,9 @@ exports.deleteTask= (req, res) => {
           error: "Could not delete task with id " + req.params.id,
         });
       }
-    } else return res.send({ message: `Task was deleted successfully` });
+    }     else 
+         return   res.send( {"data":data})
+   
+    
   });
 };
